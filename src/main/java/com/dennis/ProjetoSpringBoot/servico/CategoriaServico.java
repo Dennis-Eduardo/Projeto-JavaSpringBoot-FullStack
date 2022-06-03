@@ -7,18 +7,21 @@ import org.springframework.stereotype.Service;
 
 import com.dennis.ProjetoSpringBoot.domain.Categoria;
 import com.dennis.ProjetoSpringBoot.repository.CategoriaRepository;
+import com.dennis.ProjetoSpringBoot.servico.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaServico {
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
+
 	public Optional<Categoria> buscar(Long id) {
-		
+
 		Optional<Categoria> obj = categoriaRepository.findById(id);
-		
-		return obj;
+
+		return Optional.ofNullable(obj.orElseThrow(() -> new ObjectNotFoundException(
+			      "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName())));
+			}
 	}
 
-}
+
